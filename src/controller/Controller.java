@@ -17,11 +17,10 @@ public class Controller {
     }
 
     public void endSale() {
-        fetchDiscount();
         sale.setTotal();
         this.registerInventory += sale.getTotal();
         sale.createReceipt();
-        System.out.println("Change: " + sale.getChange());
+        registerSale();
     }
 
     public void registerSale() {

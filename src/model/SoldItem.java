@@ -30,6 +30,6 @@ public class SoldItem {
     }
 
     private void setSubtotal() {
-        this.subtotal = item.getBasePrice() * quantity * (1 + item.getVatRate().getRate());
+        this.subtotal = item.getBasePrice() * quantity * (1 + ((float) item.getVatRate().getRate() / 100));
     }
 }

@@ -52,6 +52,10 @@ public class Sale {
 
     public void pay(float payment) {
         amountPaid += payment;
+        if (amountPaid >= total) {
+            change = amountPaid - total;
+            change = Math.round(change);
+        }
     }
 
     public void createReceipt() {
@@ -104,15 +108,15 @@ public class Sale {
         }
         if (discount != null) {
             this.total -= discount.getItemsDiscount();
-            this.total = this.total * (1 - discount.getTotalDiscount());
-            this.total = this.total * (1 - discount.getCustomerDiscount());
+            this.total = this.total * (1 - (discount.getTotalDiscount()/100));
+            this.total = this.total * (1 - (discount.getCustomerDiscount()/100));
         }
     }
 
     public void setVat() {
         this.vat = 0;
         for (SoldItem soldItem : items) {
-            this.vat += soldItem.getItem().getBasePrice() * soldItem.getQuantity() * soldItem.getItem().getVatRate().getRate();
+            this.vat += soldItem.getItem().getBasePrice() * soldItem.getQuantity() * (soldItem.getItem().getVatRate().getRate())/100;
         }
     }
 }
