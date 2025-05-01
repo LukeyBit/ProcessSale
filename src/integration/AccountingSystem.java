@@ -12,7 +12,7 @@ public class AccountingSystem {
      *
      * @param sale The sale to be reported.
      */
-    public void reportSale(Sale sale) {
+    public static void reportSale(Sale sale) {
         System.out.println("Sale reported to accounting system");
     }
 }

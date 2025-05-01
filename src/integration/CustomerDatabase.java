@@ -12,7 +12,7 @@ public class CustomerDatabase {
      * @param customerIdentifier used to identify a customer given an integer
      * @return a customer
      */
-    public Customer fetchCustomer(int customerIdentifier) {
+    public static Customer fetchCustomer(int customerIdentifier) {
         return new Customer(customerIdentifier);
     }
 }

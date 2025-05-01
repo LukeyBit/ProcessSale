@@ -44,8 +44,8 @@ public class Controller {
      * Registers the sale by reporting it to the accounting system and updating the inventory.
      */
     public void registerSale() {
-        new AccountingSystem().reportSale(sale);
-        new InventorySystem().updateInventory(sale.getItems());
+        AccountingSystem.reportSale(sale);
+        InventorySystem.updateInventory(sale.getItems());
     }
 
     /**
@@ -71,7 +71,7 @@ public class Controller {
      * @return The item object fetched from the inventory system.
      */
     private Item fetchItem(int itemIdentifier) {
-         return new InventorySystem().getItem(itemIdentifier);
+         return InventorySystem.getItem(itemIdentifier);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Controller {
      * @param customerIdentifier The identifier of the customer to be fetched.
      */
     public void fetchCustomer(int customerIdentifier) {
-         sale.setCustomer(new CustomerDatabase().fetchCustomer(customerIdentifier));
+         sale.setCustomer(CustomerDatabase.fetchCustomer(customerIdentifier));
     }
 
     /**
@@ -87,7 +87,7 @@ public class Controller {
      * It updates the sale object with the fetched discount.
      */
     public void fetchDiscount() {
-        sale.setDiscount(new DiscountDatabase().fetchDiscount(sale.getItems(), sale.getTotal(), sale.getCustomer()));
+        sale.setDiscount(DiscountDatabase.fetchDiscount(sale.getItems(), sale.getTotal(), sale.getCustomer()));
     }
 
     /**

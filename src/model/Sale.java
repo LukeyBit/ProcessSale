@@ -204,4 +204,8 @@ public class Sale {
             this.vat += soldItem.getItem().getBasePrice() * soldItem.getQuantity() * (soldItem.getItem().getVatRate().getRate())/100;
         }
     }
+
+    public boolean isCompleted() {
+        return amountPaid >= total;
+    }
 }

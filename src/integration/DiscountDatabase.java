@@ -18,7 +18,7 @@ public class DiscountDatabase {
      * @param customer the ID of the customer is needed to check for any customer discounts
      * @return the total discount that was applied to the current Sale
      */
-    public Discount fetchDiscount(ArrayList<SoldItem> items, float totalCost, Customer customer) {
+    public static Discount fetchDiscount(ArrayList<SoldItem> items, float totalCost, Customer customer) {
         // Simulate fetching discount from a database
         float itemsDiscount = 0.0f;
         float totalDiscount = 0.0f;
