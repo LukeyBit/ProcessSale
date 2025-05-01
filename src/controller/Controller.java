@@ -4,7 +4,7 @@ import integration.*;
 import model.Item;
 import model.Sale;
 
-/*
+/**
  * Controller.java
  * This class is responsible for managing the sale process, including starting and ending sales,
  * registering sales, entering payments, and fetching items and customers.

@@ -6,7 +6,16 @@ import model.VatRate;
 
 import java.util.ArrayList;
 
+/**
+ * Handles each product the store has in stock, with an integer as identifier as well
+ * as name, price and vatRate for the given product
+ */
 public class InventorySystem {
+    /**
+     * Function used to get an item from the InventorySystem while "scanning" a product at the POS
+     * @param itemIdentifier an integer value used to find an item in the inventorySystem
+     * @return an object Item, which holds its name, a description of the product, a price and its vatRate
+     */
     public Item getItem(int itemIdentifier) {
         return switch (itemIdentifier) {
             case 1 -> new Item(1, "Milk 1L", "Description 1", 100.0f, VatRate.VAT_RATE1);
@@ -16,6 +25,10 @@ public class InventorySystem {
         };
     }
 
+    /**
+     * Updates the inventory after each Sale, to subtract the sold items from the database
+     * @param soldItems an ArrayList of items that were sold in the Sale
+     */
     public void updateInventory(ArrayList<SoldItem> soldItems) {
         // Logic to update inventory based on sold items
         System.out.println("Inventory updated with sold items");
