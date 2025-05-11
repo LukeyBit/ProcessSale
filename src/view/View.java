@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import logging.Logger;
 
 import java.util.Scanner;
 
@@ -31,8 +32,12 @@ public class View {
         while (scanner.hasNextInt()) {
             int itemIdentifier = scanner.nextInt();
             int quantity = scanner.nextInt();
-            scanItem(itemIdentifier, quantity);
-            System.out.println("Item scanned. The total is now: " + controller.getTotal() + " SEK. Enter next item or 'done' to finish:");
+
+            if (scanItem(itemIdentifier, quantity)) {
+                System.out.println("Item scanned. The total is now: " + controller.getTotal() + " SEK. Enter next item or 'done' to finish:");
+            } else {
+                System.out.println("Please enter a valid item identifier and quantity:");
+            }
         }
 
         scanner.nextLine();
@@ -62,9 +67,21 @@ public class View {
      *
      * @param itemIdentifier The identifier of the item to be scanned.
      * @param quantity The quantity of the item to be scanned.
+     *
+     * @return true if the item was successfully scanned, false otherwise.
      */
-    public void scanItem(int itemIdentifier, int quantity) {
-        controller.enterItem(itemIdentifier, quantity);
+    public boolean scanItem(int itemIdentifier, int quantity) {
+        try {
+            controller.enterItem(itemIdentifier, quantity);
+            return true;
+        } catch (IllegalArgumentException e) {
+            new Logger().log(e.getMessage());
+            return false;
+        } catch (RuntimeException e) {
+            new Logger().log(e.getMessage());
+            System.out.println("!!! Server is not active. Please try again later. !!!");
+            return false;
+        }
     }
 
     /**

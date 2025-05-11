@@ -60,8 +60,11 @@ public class Controller {
      * Enters an item into the current sale.
      * @param itemIdentifier The identifier of the item to be entered.
      * @param quantity The quantity of the item to be entered.
+     *
+     * @throws RuntimeException if the item is not found in the inventory system.
+     * @throws IllegalArgumentException if the item identifier is invalid.
      */
-    public void enterItem(int itemIdentifier, int quantity) {
+    public void enterItem(int itemIdentifier, int quantity) throws RuntimeException, IllegalArgumentException{
         sale.addItem(fetchItem(itemIdentifier), quantity);
     }
 
@@ -69,9 +72,12 @@ public class Controller {
      * Fetches an item from the inventory system using its identifier.
      * @param itemIdentifier The identifier of the item to be fetched.
      * @return The item object fetched from the inventory system.
+     *
+     * @throws RuntimeException if the item is not found in the inventory system.
+     * @throws IllegalArgumentException if the item identifier is invalid.
      */
-    private Item fetchItem(int itemIdentifier) {
-         return InventorySystem.getItem(itemIdentifier);
+    private Item fetchItem(int itemIdentifier) throws RuntimeException, IllegalArgumentException {
+        return InventorySystem.getItem(itemIdentifier);
     }
 
     /**
