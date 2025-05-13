@@ -36,7 +36,7 @@ public class Controller {
     public void endSale() {
         sale.setTotal();
         this.registerInventory += sale.getTotal();
-        sale.createReceipt();
+        Printer.print(sale.toDTO());
         registerSale();
     }
 
@@ -44,8 +44,9 @@ public class Controller {
      * Registers the sale by reporting it to the accounting system and updating the inventory.
      */
     public void registerSale() {
-        AccountingSystem.reportSale(sale);
-        InventorySystem.updateInventory(sale.getItems());
+        SaleDTO saleDTO = sale.toDTO();
+        AccountingSystem.reportSale(saleDTO);
+        InventorySystem.updateInventory(saleDTO.items());
     }
 
     /**
@@ -64,8 +65,13 @@ public class Controller {
      * @throws RuntimeException if the item is not found in the inventory system.
      * @throws IllegalArgumentException if the item identifier is invalid.
      */
-    public void enterItem(int itemIdentifier, int quantity) throws RuntimeException, IllegalArgumentException{
-        sale.addItem(fetchItem(itemIdentifier), quantity);
+    public Item enterItem(int itemIdentifier, int quantity) throws RuntimeException, IllegalArgumentException{
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
+        Item item = fetchItem(itemIdentifier);
+        sale.addItem(item, quantity);
+        return item;
     }
 
     /**

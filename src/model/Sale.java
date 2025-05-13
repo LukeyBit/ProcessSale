@@ -1,5 +1,7 @@
 package model;
 
+import integration.SaleDTO;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -83,14 +85,6 @@ public class Sale {
             change = amountPaid - total;
             change = Math.round(change);
         }
-    }
-
-    /**
-     * Creates a receipt for the sale.
-     * This method is called when the sale is completed.
-     */
-    public void createReceipt() {
-        new Receipt(this);
     }
 
     /**
@@ -207,5 +201,11 @@ public class Sale {
 
     public boolean isCompleted() {
         return amountPaid >= total;
+    }
+
+    public SaleDTO toDTO() {
+        setTotal();
+        setVat();
+        return new SaleDTO(saleDateTime, items.stream().map(SoldItem::toDTO).toList(), total, vat, discount, amountPaid, change, customer);
     }
 }

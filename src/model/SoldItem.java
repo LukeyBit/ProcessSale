@@ -1,6 +1,8 @@
 package model;
 
 
+import integration.SoldItemDTO;
+
 /**
  * The SoldItem class represents an item sold in the Point of Sale (POS) system.
  * It contains information about the item, its quantity, and the subtotal for that item.
@@ -66,5 +68,9 @@ public class SoldItem {
      */
     private void setSubtotal() {
         this.subtotal = item.getBasePrice() * quantity * (1 + ((float) item.getVatRate().getRate() / 100));
+    }
+
+    public SoldItemDTO toDTO() {
+        return new SoldItemDTO(item, quantity, subtotal);
     }
 }

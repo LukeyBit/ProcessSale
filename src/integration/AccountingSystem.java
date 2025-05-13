@@ -1,10 +1,8 @@
 package integration;
 
-import model.Sale;
-
 /**
  * A class to handle accounting. This is not a necessity for the current assignment
- * which is why it simply returns a message when called, for unit test purposes
+ * which is why it simply returns a message when called, for unit integration.test purposes
  */
 public class AccountingSystem {
     /**
@@ -12,7 +10,7 @@ public class AccountingSystem {
      *
      * @param sale The sale to be reported.
      */
-    public static void reportSale(Sale sale) {
+    public static void reportSale(SaleDTO sale) {
         System.out.println("Sale reported to accounting system");
     }
 }

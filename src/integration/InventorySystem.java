@@ -1,9 +1,9 @@
 package integration;
 
 import model.Item;
-import model.SoldItem;
 import model.VatRate;
-import java.util.ArrayList;
+
+import java.util.List;
 
 /**
  * Handles each product the store has in stock, with an integer as identifier as well
@@ -32,7 +32,7 @@ public class InventorySystem {
      * Updates the inventory after each Sale, to subtract the sold items from the database
      * @param soldItems an ArrayList of items that were sold in the Sale
      */
-    public static void updateInventory(ArrayList<SoldItem> soldItems) {
+    public static void updateInventory(List<SoldItemDTO> soldItems) {
         // Logic to update inventory based on sold items
         System.out.println("Inventory updated with sold items");
     }

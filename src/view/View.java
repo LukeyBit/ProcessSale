@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import logging.Logger;
+import model.Item;
 
 import java.util.Scanner;
 
@@ -33,10 +34,11 @@ public class View {
             int itemIdentifier = scanner.nextInt();
             int quantity = scanner.nextInt();
 
-            if (scanItem(itemIdentifier, quantity)) {
-                System.out.println("Item scanned. The total is now: " + controller.getTotal() + " SEK. Enter next item or 'done' to finish:");
-            } else {
-                System.out.println("Please enter a valid item identifier and quantity:");
+            try {
+                Item item = scanItem(itemIdentifier, quantity);
+                System.out.println("Scanned item: " + item.getName() + ", Price: " + item.getBasePrice() + "\n" + item.getDescription() + "\nThe total is now: " + controller.getTotal() + " SEK.");
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
             }
         }
 
@@ -68,19 +70,17 @@ public class View {
      * @param itemIdentifier The identifier of the item to be scanned.
      * @param quantity The quantity of the item to be scanned.
      *
-     * @return true if the item was successfully scanned, false otherwise.
+     * @return The scanned item.
      */
-    public boolean scanItem(int itemIdentifier, int quantity) {
+    public Item scanItem(int itemIdentifier, int quantity) throws RuntimeException {
         try {
-            controller.enterItem(itemIdentifier, quantity);
-            return true;
+            return controller.enterItem(itemIdentifier, quantity);
         } catch (IllegalArgumentException e) {
             new Logger().log(e.getMessage());
-            return false;
+            throw new RuntimeException("Invalid item identifier or quantity. Please try again.");
         } catch (RuntimeException e) {
             new Logger().log(e.getMessage());
-            System.out.println("!!! Server is not active. Please try again later. !!!");
-            return false;
+            throw new RuntimeException("Something went wrong with the server. Please try again later.");
         }
     }
 
