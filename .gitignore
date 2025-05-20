@@ -2,6 +2,15 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.idea/*
+.idea/*
+!.idea/codeStyles
+!.idea/inspectionProfiles
+!.idea/vcs.xml
+!.idea/modules.xml
+!.idea/misc.xml
+!.idea/runConfigurations
+!.idea/.gitignore
 
 ### Eclipse ###
 .apt_generated
@@ -33,3 +42,5 @@ log.txt
 error_log.txt
 total_revenue_log.txt
 
+### Build ###
+**/META-INF/
