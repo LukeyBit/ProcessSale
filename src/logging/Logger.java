@@ -9,8 +9,7 @@ import java.io.PrintWriter;
  * This class is responsible for logging messages to a file.
  * It provides methods to log messages and handle file writing.
  */
-public class Logger{
-    private final String logFilePath = "log.txt";
+public abstract class Logger {
     private PrintWriter writer;
 
     /**
@@ -19,16 +18,24 @@ public class Logger{
      */
     public Logger() {
         try {
-            writer = new PrintWriter(new FileWriter(logFilePath, true));
+            writer = new PrintWriter(new FileWriter(getLogFilePath(), true));
         } catch (IOException e) {
             System.err.println("Error initializing logger: " + e.getMessage());
         }
     }
 
     /**
+     * Returns the path to the log file.
+     * This method should be overridden by subclasses to provide the specific log file path.
+     *
+     * @return The path to the log file.
+     */
+    protected abstract String getLogFilePath();
+
+    /**
      * Logs a message to the log file.
      *
-     * @param message
+     * @param message The message to log.
      */
     public void log(String message) {
         if (writer != null) {

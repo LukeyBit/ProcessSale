@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import exception.InvalidIdentifierException;
+import exception.ServerOfflineException;
+import logging.ErrorFileOutput;
 import logging.Logger;
 import model.Item;
 
@@ -37,7 +40,8 @@ public class View {
             try {
                 Item item = scanItem(itemIdentifier, quantity);
                 System.out.println("Scanned item: " + item.getName() + ", Price: " + item.getBasePrice() + "\n" + item.getDescription() + "\nThe total is now: " + controller.getTotal() + " SEK.");
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
+                ErrorFileOutput.getInstance().log(e.getMessage());
                 System.out.println(e.getMessage());
             }
         }
@@ -72,16 +76,8 @@ public class View {
      *
      * @return The scanned item.
      */
-    public Item scanItem(int itemIdentifier, int quantity) throws RuntimeException {
-        try {
+    public Item scanItem(int itemIdentifier, int quantity) throws ServerOfflineException, InvalidIdentifierException {
             return controller.enterItem(itemIdentifier, quantity);
-        } catch (IllegalArgumentException e) {
-            new Logger().log(e.getMessage());
-            throw new RuntimeException("Invalid item identifier or quantity. Please try again.");
-        } catch (RuntimeException e) {
-            new Logger().log(e.getMessage());
-            throw new RuntimeException("Something went wrong with the server. Please try again later.");
-        }
     }
 
     /**

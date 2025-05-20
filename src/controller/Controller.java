@@ -1,5 +1,7 @@
 package controller;
 
+import exception.InvalidIdentifierException;
+import exception.ServerOfflineException;
 import integration.*;
 import model.Item;
 import model.Sale;
@@ -62,28 +64,17 @@ public class Controller {
      * @param itemIdentifier The identifier of the item to be entered.
      * @param quantity The quantity of the item to be entered.
      *
-     * @throws RuntimeException if the item is not found in the inventory system.
-     * @throws IllegalArgumentException if the item identifier is invalid.
+     * @throws ServerOfflineException if the server is offline.
+     * @throws InvalidIdentifierException if the item identifier is invalid.
      */
-    public Item enterItem(int itemIdentifier, int quantity) throws RuntimeException, IllegalArgumentException{
+    public Item enterItem(int itemIdentifier, int quantity) throws ServerOfflineException, InvalidIdentifierException {
+        Item item = InventorySystem.getItem(itemIdentifier);
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than zero");
+            sale.removeItem(item, Math.abs(quantity));
+        } else {
+            sale.addItem(item, quantity);
         }
-        Item item = fetchItem(itemIdentifier);
-        sale.addItem(item, quantity);
         return item;
-    }
-
-    /**
-     * Fetches an item from the inventory system using its identifier.
-     * @param itemIdentifier The identifier of the item to be fetched.
-     * @return The item object fetched from the inventory system.
-     *
-     * @throws RuntimeException if the item is not found in the inventory system.
-     * @throws IllegalArgumentException if the item identifier is invalid.
-     */
-    private Item fetchItem(int itemIdentifier) throws RuntimeException, IllegalArgumentException {
-        return InventorySystem.getItem(itemIdentifier);
     }
 
     /**
