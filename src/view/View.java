@@ -4,7 +4,6 @@ import controller.Controller;
 import exception.InvalidIdentifierException;
 import exception.ServerOfflineException;
 import logging.ErrorFileOutput;
-import logging.Logger;
 import model.Item;
 
 import java.util.Scanner;
