@@ -25,47 +25,64 @@ public class View {
      */
     public View(Controller controller) {
         this.controller = controller;
-        controller.startSale();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to the POS system!");
         System.out.println("Please scan items, add customer, and make payment.");
 
-        System.out.println("Enter item identifier and quantity (e.g., 1 2):");
+        do {
+            controller.startSale();
+            boolean scanningItems = true;
+            do {
+                System.out.println("Enter item identifier and quantity (e.g., 1 2) or \"Done\" to finish:");
 
-        while (scanner.hasNextInt()) {
-            int itemIdentifier = scanner.nextInt();
-            int quantity = scanner.nextInt();
+                if (scanner.hasNextInt()) {
+                    int itemIdentifier = scanner.nextInt();
+                    int quantity = scanner.nextInt();
 
-            try {
-                Item item = scanItem(itemIdentifier, quantity);
-                System.out.println("Scanned item: " + item.getName() + ", Price: " + item.getBasePrice() + "\n" + item.getDescription() + "\nThe total is now: " + controller.getTotal() + " SEK.");
-            } catch (Exception e) {
-                ErrorFileOutput.getInstance().log(e.getMessage());
-                System.out.println(e.getMessage());
+                    try {
+                        Item item = scanItem(itemIdentifier, quantity);
+                        System.out.println("Scanned item: " + item.getName() + ", Price: " + item.getBasePrice() + "\n" + item.getDescription() + "\nThe total is now: " + controller.getTotal() + " SEK.");
+                    } catch (Exception e) {
+                        ErrorFileOutput.getInstance().log(e.getMessage());
+                        System.out.println(e.getMessage());
+                        System.out.println("Please try again.");
+                    }
+                } else {
+                    for (int i = 0; i < 2; i++) {
+                        String input = scanner.nextLine();
+                        if (input.equalsIgnoreCase("done")) {
+                            System.out.println("Finished scanning items.");
+                            scanningItems = false;
+                        }
+                    }
+                    if (scanningItems) {
+                        System.out.println("Invalid input. Please enter item identifier and quantity (e.g., 1 2) or \"Done\" to finish:");
+                    }
+                }
+            } while (scanningItems);
+
+            System.out.println("Enter customer identifier (or -1 if no customer):");
+            int customerInput = scanner.nextInt();
+
+            if (customerInput != -1) {
+                addCustomer(customerInput);
             }
-        }
 
-        scanner.nextLine();
-        scanner.nextLine();
+            controller.fetchDiscount();
 
-        System.out.println("Enter customer identifier (or -1 if no customer):");
-        int customerInput = scanner.nextInt();
+            System.out.println("The total is now: " + controller.getTotal() + " SEK.");
+            System.out.println("Enter payment amount:");
 
-        if (customerInput != -1) {
-            addCustomer(customerInput);
-        }
+            float payment = scanner.nextFloat();
+            pay(payment);
+            System.out.println("Payment received. The total is now: " + controller.getTotal() + " SEK.\n");
 
-        controller.fetchDiscount();
+            endSale();
 
-        System.out.println("The total is now: " + controller.getTotal() + " SEK.");
-        System.out.println("Enter payment amount:");
-
-        float payment = scanner.nextFloat();
-        pay(payment);
-        System.out.println("Payment received. The total is now: " + controller.getTotal() + " SEK.\n");
-
-        endSale();
+            System.out.println("\nSale completed. To start a new sale, type \"New\" or \"Quit\" to exit.");
+            scanner.nextLine();
+        } while (!scanner.nextLine().equalsIgnoreCase("quit"));
     }
 
     /**

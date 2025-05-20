@@ -1,13 +1,17 @@
 package logging;
 
+import util.RevenueObserver;
+
 /**
  * TotalRevenueFileOutput.java
  * This class is responsible for logging total revenue messages to a specific file.
  * It extends the Logger class and provides a singleton instance for logging total revenue.
  */
-public class TotalRevenueFileOutput extends Logger {
+public class TotalRevenueFileOutput extends Logger implements RevenueObserver {
     private static TotalRevenueFileOutput instance;
     private static final String LOG_FILE_PATH = "total_revenue_log.txt";
+
+    private static float totalRevenue;
 
     /**
      * Private constructor to prevent instantiation.
@@ -38,5 +42,18 @@ public class TotalRevenueFileOutput extends Logger {
     @Override
     protected String getLogFilePath() {
         return LOG_FILE_PATH;
+    }
+
+    /**
+     * Updates the total revenue and logs the message.
+     * This method is called when the revenue is updated.
+     *
+     * @param revenue The revenue to be added to the total.
+     */
+    @Override
+    public void update(float revenue) {
+        totalRevenue += revenue;
+        String message = "Total Revenue: " + totalRevenue;
+        log(message);
     }
 }

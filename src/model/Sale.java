@@ -1,6 +1,10 @@
 package model;
 
 import integration.SaleDTO;
+import logging.TotalRevenueFileOutput;
+import util.RevenueObservable;
+import util.RevenueObserver;
+import view.TotalRevenueView;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,7 +14,7 @@ import java.util.ArrayList;
  * The Sale class represents a sale transaction in the Point of Sale (POS) system.
  * It contains information about the items sold, total amount, VAT, discount, payment, and customer.
  */
-public class Sale {
+public class Sale implements RevenueObservable {
     private LocalDateTime saleDateTime;
     private ArrayList<SoldItem> items;
     private float total;
@@ -19,6 +23,7 @@ public class Sale {
     private float amountPaid;
     private float change;
     private Customer customer;
+    private ArrayList<RevenueObserver> observers = new ArrayList<>();
 
     /**
      * Constructor for the Sale class.
@@ -32,6 +37,9 @@ public class Sale {
         this.amountPaid = 0;
         this.change = 0;
         setDateTime();
+
+        addObserver(TotalRevenueView.getInstance());
+        addObserver(TotalRevenueFileOutput.getInstance());
     }
 
     /**
@@ -85,6 +93,7 @@ public class Sale {
             change = amountPaid - total;
             change = Math.round(change);
         }
+        notifyObservers(total);
     }
 
     /**
@@ -207,5 +216,41 @@ public class Sale {
         setTotal();
         setVat();
         return new SaleDTO(saleDateTime, items.stream().map(SoldItem::toDTO).toList(), total, vat, discount, amountPaid, change, customer);
+    }
+
+    /**
+     * Adds an observer to the list of observers.
+     *
+     * @param revenueObserver The observer to be added.
+     */
+    @Override
+    public void addObserver(RevenueObserver revenueObserver) {
+        if (revenueObserver != null && !observers.contains(revenueObserver)) {
+            observers.add(revenueObserver);
+        }
+    }
+
+    /**
+     * Removes an observer from the list of observers.
+     *
+     * @param revenueObserver The observer to be removed.
+     */
+    @Override
+    public void removeObserver(RevenueObserver revenueObserver) {
+        if (revenueObserver != null) {
+            observers.remove(revenueObserver);
+        }
+    }
+
+    /**
+     * Notifies all observers with the given revenue.
+     *
+     * @param revenue The revenue to be passed to the observers.
+     */
+    @Override
+    public void notifyObservers(float revenue) {
+        for (RevenueObserver observer : observers) {
+            observer.update(revenue);
+        }
     }
 }
