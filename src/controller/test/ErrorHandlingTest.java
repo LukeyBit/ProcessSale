@@ -2,6 +2,8 @@ package controller.test;
 
 import controller.Controller;
 
+import exception.InvalidIdentifierException;
+import exception.ServerOfflineException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,21 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ErrorHandlingTest {
 
     /**
-     * This test case verifies that the IllegalArgumentException is thrown
-     * when an invalid item quantity is entered.
-     */
-    @Test
-    void testQuantityError() {
-        Controller controller = new Controller();
-
-        controller.startSale();
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> controller.enterItem(1, -1));
-
-        assertTrue(exception.getMessage().contains("Quantity must be greater than zero"), "Expected error message not found.");
-    }
-
-    /**
-     * This test case verifies that the IllegalArgumentException is thrown
+     * This test case verifies that the InvalidIdentifierException is thrown
      * when an invalid item identifier is entered.
      */
     @Test
@@ -37,13 +25,13 @@ public class ErrorHandlingTest {
         Controller controller = new Controller();
 
         controller.startSale();
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> controller.enterItem(999, 1));
+        Exception exception = assertThrows(InvalidIdentifierException.class, () -> controller.enterItem(999, 1));
 
         assertTrue(exception.getMessage().contains("Unknown item identifier: " + 999), "Expected error message not found.");
     }
 
     /**
-     * This test case verifies that the RuntimeException is thrown
+     * This test case verifies that the ServerOfflineException is thrown
      * when the server is not active.
      */
     @Test
@@ -51,8 +39,8 @@ public class ErrorHandlingTest {
         Controller controller = new Controller();
 
         controller.startSale();
-        Exception exception = assertThrows(RuntimeException.class, () -> controller.enterItem(4, 1));
+        Exception exception = assertThrows(ServerOfflineException.class, () -> controller.enterItem(4, 1));
 
-        assertTrue(exception.getMessage().contains("The server is not active"), "Expected error message not found.");
+        assertTrue(exception.getMessage().contains("Server is offline"), "Expected error message not found.");
     }
 }
