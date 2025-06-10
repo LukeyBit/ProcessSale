@@ -5,7 +5,6 @@ import exception.InvalidIdentifierException;
 import exception.ServerOfflineException;
 import logging.ErrorFileOutput;
 import model.Item;
-
 import java.util.Scanner;
 
 /**
@@ -43,9 +42,8 @@ public class View {
                         Item item = scanItem(itemIdentifier, quantity);
                         System.out.println("Scanned item: " + item.getName() + ", Price: " + item.getBasePrice() + "\n" + item.getDescription() + "\nThe total is now: " + controller.getTotal() + " SEK.");
                     } catch (Exception e) {
-                        ErrorFileOutput.getInstance().log(e.getMessage());
-                        System.out.println(e.getMessage());
-                        System.out.println("Please try again.");
+                        ErrorFileOutput.getInstance().log(ErrorFileOutput.getExceptionLogMessage(e));
+                        System.out.println("An error occurred. Please try again.");
                     }
                 } else {
                     for (int i = 0; i < 2; i++) {

@@ -10,7 +10,6 @@ import util.RevenueObserver;
 public class TotalRevenueFileOutput extends Logger implements RevenueObserver {
     private static TotalRevenueFileOutput instance;
     private static final String LOG_FILE_PATH = "total_revenue_log.txt";
-
     private static float totalRevenue;
 
     /**

@@ -30,6 +30,23 @@ public class ErrorFileOutput extends Logger {
     }
 
     /**
+     * Returns a formatted string containing the exception details.
+     * This method is used to log exception messages in a readable format.
+     * @param e The exception to log.
+     *
+     * @return A formatted string containing the exception class name, message, and stack trace.
+     */
+    public static String getExceptionLogMessage(Exception e) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Exception: ").append(e.getClass().getName()).append("\n");
+        sb.append("Message: ").append(e.getMessage()).append("\n");
+        for (StackTraceElement element : e.getStackTrace()) {
+            sb.append("\tat ").append(element.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
      * Returns the path to the error log file.
      * This method is overridden from the Logger class to provide the specific log file path.
      *

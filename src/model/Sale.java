@@ -1,10 +1,8 @@
 package model;
 
 import integration.SaleDTO;
-import logging.TotalRevenueFileOutput;
 import util.RevenueObservable;
 import util.RevenueObserver;
-import view.TotalRevenueView;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class Sale implements RevenueObservable {
      * Constructor for the Sale class.
      * Initializes the items list, total amount, VAT, discount, payment, and change.
      */
-    public Sale() {
+    public Sale(RevenueObserver[] revObservers) {
         this.items = new ArrayList<>();
         this.total = 0;
         this.vat = 0;
@@ -38,8 +36,9 @@ public class Sale implements RevenueObservable {
         this.change = 0;
         setDateTime();
 
-        addObserver(TotalRevenueView.getInstance());
-        addObserver(TotalRevenueFileOutput.getInstance());
+        for (RevenueObserver observer : revObservers) {
+            addObserver(observer);
+        }
     }
 
     /**

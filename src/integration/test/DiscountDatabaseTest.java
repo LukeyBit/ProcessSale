@@ -3,6 +3,7 @@ package integration.test;
 import integration.DiscountDatabase;
 import model.*;
 import org.junit.jupiter.api.Test;
+import util.RevenueObserver;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,9 +12,7 @@ public class DiscountDatabaseTest {
     @Test
     void testFetchDiscount() {
         // Create a Sale object
-        Sale sale = new Sale();
-
-        // Add items to the sale
+        Sale sale = new Sale(new RevenueObserver[]{});
         sale.addItem(new Item(1, "Test1", "Testing item 1", 10f, VatRate.VAT_RATE1), 2);
         sale.addItem(new Item(2, "Test2", "Testing item 2", 20f, VatRate.VAT_RATE1), 1);
 

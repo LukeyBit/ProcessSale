@@ -5,6 +5,7 @@ import model.Item;
 import model.Sale;
 import model.VatRate;
 import org.junit.jupiter.api.Test;
+import util.RevenueObserver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +18,7 @@ public class SaleTest {
      */
     @Test
     void testSale() {
-        Sale sale = new Sale();
+        Sale sale = new Sale(new RevenueObserver[]{});
 
         sale.addItem(new Item(1, "Test1", "Testing item 1", 100f, VatRate.VAT_RATE1), 2);
         sale.addItem(new Item(2, "Test2", "Testing item 2", 200f, VatRate.VAT_RATE1), 1);

@@ -3,8 +3,11 @@ package controller;
 import exception.InvalidIdentifierException;
 import exception.ServerOfflineException;
 import integration.*;
+import logging.TotalRevenueFileOutput;
 import model.Item;
 import model.Sale;
+import util.RevenueObserver;
+import view.TotalRevenueView;
 
 /**
  * Controller.java
@@ -28,7 +31,12 @@ public class Controller {
      * Starts a new sale by creating a new Sale object.
      */
     public void startSale() {
-        this.sale = new Sale();
+        RevenueObserver[] observers = {
+            TotalRevenueFileOutput.getInstance(),
+            TotalRevenueView.getInstance(),
+        };
+
+        this.sale = new Sale(observers);
     }
 
     /**
